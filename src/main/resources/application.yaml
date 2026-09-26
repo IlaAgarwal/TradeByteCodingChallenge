@@ -12,3 +12,8 @@ spring:
   h2:
     console:
       enabled: true
+
+todo:
+  past-due-check:
+    # How often to flag overdue "not done" items as "past due"
+    interval: 60s

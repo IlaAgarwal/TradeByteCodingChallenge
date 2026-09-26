@@ -21,4 +21,5 @@ public enum Status {
         }
         throw new IllegalArgumentException("Unknown status: " + value);
     }
+
 }

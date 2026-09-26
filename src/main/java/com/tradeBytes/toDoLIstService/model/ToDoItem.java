@@ -13,9 +13,10 @@ public class ToDoItem {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
+
     private String description;
 
-    @Enumerated(EnumType.STRING)
+    @Convert(converter = StatusConverter.class)
     private Status status;
 
     @Column(name = "creation_datetime", nullable = false)
