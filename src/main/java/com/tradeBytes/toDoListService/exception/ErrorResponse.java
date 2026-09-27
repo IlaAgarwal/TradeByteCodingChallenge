@@ -1,4 +1,4 @@
-package com.tradeBytes.toDoLIstService.exception;
+package com.tradeBytes.toDoListService.exception;
 
 import java.time.LocalDateTime;
 

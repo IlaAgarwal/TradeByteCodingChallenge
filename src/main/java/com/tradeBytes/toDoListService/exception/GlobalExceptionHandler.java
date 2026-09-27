@@ -1,8 +1,11 @@
-package com.tradeBytes.toDoLIstService.exception;
+package com.tradeBytes.toDoListService.exception;
 
 import jakarta.servlet.http.HttpServletRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
@@ -13,9 +16,16 @@ import java.util.Arrays;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+
     @ExceptionHandler(ItemImmutableException.class)
     public ResponseEntity<ErrorResponse> handleItemImmutable(ItemImmutableException ex, HttpServletRequest request) {
         return buildResponse(HttpStatus.CONFLICT, ex.getMessage(), request);
+    }
+
+    @ExceptionHandler(ObjectOptimisticLockingFailureException.class)
+    public ResponseEntity<ErrorResponse> conflict(ObjectOptimisticLockingFailureException ex, HttpServletRequest request) {
+        return buildResponse(HttpStatus.CONFLICT, "Item was changed by someone else, please retry", request);
     }
 
     @ExceptionHandler(ItemNotFoundException.class)
@@ -38,6 +48,8 @@ public class GlobalExceptionHandler {
     }
 
     private ResponseEntity<ErrorResponse> buildResponse(HttpStatus status, String message, HttpServletRequest request) {
+        log.warn("{} {}: {}->  {} {}",
+                status.value(), status.getReasonPhrase(), message,request.getMethod(), request.getRequestURI());
         ErrorResponse body = new ErrorResponse(
                 LocalDateTime.now(),
                 status.value(),

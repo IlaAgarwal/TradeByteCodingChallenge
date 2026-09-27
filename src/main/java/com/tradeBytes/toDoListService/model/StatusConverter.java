@@ -1,4 +1,4 @@
-package com.tradeBytes.toDoLIstService.model;
+package com.tradeBytes.toDoListService.model;
 
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;

@@ -13,6 +13,11 @@ spring:
     console:
       enabled: true
 
+logging:
+  level:
+    # Set to DEBUG to also see read queries and no-op status changes
+    com.tradeBytes.toDoLIstService: INFO
+
 todo:
   past-due-check:
     # How often to flag overdue "not done" items as "past due"

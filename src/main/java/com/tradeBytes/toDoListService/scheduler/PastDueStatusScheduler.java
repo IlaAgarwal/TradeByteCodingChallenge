@@ -1,6 +1,6 @@
-package com.tradeBytes.toDoLIstService.scheduler;
+package com.tradeBytes.toDoListService.scheduler;
 
-import com.tradeBytes.toDoLIstService.service.ToDoItemService;
+import com.tradeBytes.toDoListService.service.ToDoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -16,15 +16,15 @@ public class PastDueStatusScheduler {
 
     private static final Logger log = LoggerFactory.getLogger(PastDueStatusScheduler.class);
 
-    private final ToDoItemService toDoItemService;
+    private final ToDoService toDoService;
 
-    public PastDueStatusScheduler(ToDoItemService toDoItemService) {
-        this.toDoItemService = toDoItemService;
+    public PastDueStatusScheduler(ToDoService toDoService) {
+        this.toDoService = toDoService;
     }
 
-    @Scheduled(fixedDelayString = "${todo.past-due-check.interval:60s}")
+    @Scheduled(fixedDelayString = "${todo.past-due-check.interval}")
     public void markPastDueItems() {
-        int updated = toDoItemService.markPastDueItems();
+        int updated = toDoService.markPastDueItems();
         if (updated > 0) {
             log.info("Marked {} item(s) as past due", updated);
         }

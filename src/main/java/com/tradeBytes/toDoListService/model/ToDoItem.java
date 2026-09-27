@@ -1,5 +1,6 @@
-package com.tradeBytes.toDoLIstService.model;
+package com.tradeBytes.toDoListService.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import java.time.LocalDateTime;
@@ -7,7 +8,6 @@ import java.util.UUID;
 
 @Data
 @Entity
-@Table(name = "to_do_item")
 public class ToDoItem {
 
     @Id
@@ -27,6 +27,11 @@ public class ToDoItem {
 
     @Column(name = "done_datetime")
     private LocalDateTime doneDateTime;
+
+    @Version
+    @JsonIgnore
+    @Column(nullable = false)
+    private Long version = 0L;
 
 
 

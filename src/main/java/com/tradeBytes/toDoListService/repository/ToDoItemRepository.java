@@ -1,7 +1,7 @@
-package com.tradeBytes.toDoLIstService.repository;
+package com.tradeBytes.toDoListService.repository;
 
-import com.tradeBytes.toDoLIstService.model.Status;
-import com.tradeBytes.toDoLIstService.model.ToDoItem;
+import com.tradeBytes.toDoListService.model.Status;
+import com.tradeBytes.toDoListService.model.ToDoItem;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -16,17 +16,13 @@ import java.util.UUID;
 @Repository
 public interface ToDoItemRepository extends JpaRepository<ToDoItem, UUID> {
 
-    List<ToDoItem> findByStatus(Status status);
-
-    List<ToDoItem> findByStatusAndDueDateTimeBefore(Status status, LocalDateTime dateTime);
+    List<ToDoItem> findByStatusAndDueDateTimeAfter(Status status, LocalDateTime now);
 
     @Modifying(clearAutomatically = true, flushAutomatically = true)
-    @Query("UPDATE ToDoItem t SET t.status = :newStatus WHERE t.status = :currentStatus AND t.dueDateTime < :now")
+    @Query("UPDATE ToDoItem t SET t.status = :newStatus , t.version = t.version + 1 WHERE t.status = :currentStatus AND t.dueDateTime < :now")
     int updateStatusForPastDueItems(@Param("newStatus") Status newStatus,
                                     @Param("currentStatus") Status currentStatus,
                                     @Param("now") LocalDateTime now);
-
-    Optional<ToDoItem> findById(UUID item_id);
 
 
 }

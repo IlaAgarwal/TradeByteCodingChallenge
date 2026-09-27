@@ -1,4 +1,4 @@
-package com.tradeBytes.toDoLIstService;
+package com.tradeBytes.toDoListService;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
