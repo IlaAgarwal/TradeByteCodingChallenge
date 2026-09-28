@@ -12,11 +12,13 @@ spring:
   h2:
     console:
       enabled: true
+      settings:
+        web-allow-others: true
 
 logging:
   level:
     # Set to DEBUG to also see read queries and no-op status changes
-    com.tradeBytes.toDoLIstService: INFO
+    com.tradeBytes.toDoListService: INFO
 
 todo:
   past-due-check:

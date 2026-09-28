@@ -182,12 +182,24 @@ class TodoServiceTest {
         }
 
         @Test
-        void cannotBeReopenedAfterDueDate() {
+        void descriptionCanBeUpdatedAfterDueDate() {
             UUID id = givenItem("check emails", Status.DONE, YESTERDAY);
 
-            assertThatThrownBy(() -> service.updateStatus(id, Status.NOT_DONE))
+            service.updateDescription(id, "answer emails");
+
+            assertThat(stored(id).getDescription()).isEqualTo("answer emails");
+        }
+
+        @Test
+        void canBeReopenedAfterDueDateButThenRejectsChanges() {
+            UUID id = givenItem("check emails", Status.DONE, YESTERDAY);
+
+            service.updateStatus(id, Status.NOT_DONE);
+            assertThat(stored(id).getStatus()).isEqualTo(Status.NOT_DONE);
+
+            // Now "not done" and overdue, so it is treated as past due straight away
+            assertThatThrownBy(() -> service.updateStatus(id, Status.DONE))
                 .isInstanceOf(ItemImmutableException.class);
-            assertThat(stored(id).getStatus()).isEqualTo(Status.DONE);
         }
     }
 

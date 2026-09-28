@@ -1,8 +1,8 @@
 package com.tradeBytes.toDoListService.model;
 
-import lombok.Getter;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 
-@Getter
 public enum Status {
 
     NOT_DONE("not done"),
@@ -15,6 +15,13 @@ public enum Status {
         this.value = value;
     }
 
+    /** Serialised to/from JSON as "not done", "done" or "past due". */
+    @JsonValue
+    public String getValue() {
+        return value;
+    }
+
+    @JsonCreator
     public static Status fromValue(String value) {
         for (Status s : values()) {
             if (s.value.equals(value)) return s;

@@ -53,18 +53,18 @@ class ToDoListServiceIntegrationTest {
                                 """))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.description").value("prepare daily report"))
-                .andExpect(jsonPath("$.status").value("NOT_DONE"))
+                .andExpect(jsonPath("$.status").value("not done"))
                 .andReturn().getResponse().getContentAsString();
         String id = JsonPath.read(body, "$.id");
 
         mockMvc.perform(patch(BASE + "/{id}/MarkDone", id))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.status").value("DONE"))
+                .andExpect(jsonPath("$.status").value("done"))
                 .andExpect(jsonPath("$.doneDateTime").isNotEmpty());
 
         mockMvc.perform(patch(BASE + "/{id}/MarkNotdone", id))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.status").value("NOT_DONE"))
+                .andExpect(jsonPath("$.status").value("not done"))
                 .andExpect(jsonPath("$.doneDateTime").isEmpty());
 
         mockMvc.perform(patch(BASE + "/{id}/updateDescription", id)
@@ -77,7 +77,7 @@ class ToDoListServiceIntegrationTest {
         mockMvc.perform(get(BASE + "/{id}/getItem", id))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].description").value("send daily report"))
-                .andExpect(jsonPath("$[0].status").value("NOT_DONE"));
+                .andExpect(jsonPath("$[0].status").value("not done"));
 
         mockMvc.perform(get(BASE + "/getAllItems"))
                 .andExpect(status().isOk())
@@ -101,7 +101,7 @@ class ToDoListServiceIntegrationTest {
 
         mockMvc.perform(get(BASE + "/getAllItems").param("fetchAll", "true"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].status").value("PAST_DUE"));
+                .andExpect(jsonPath("$[0].status").value("past due"));
 
         mockMvc.perform(get(BASE + "/getAllItems"))
                 .andExpect(status().isOk())

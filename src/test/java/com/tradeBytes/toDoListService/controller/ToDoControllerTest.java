@@ -68,7 +68,7 @@ class ToDoControllerTest {
                                     """))
                     .andExpect(status().isOk())
                     .andExpect(jsonPath("$.id").value(ID.toString()))
-                    .andExpect(jsonPath("$.status").value("NOT_DONE"))
+                    .andExpect(jsonPath("$.status").value("not done"))
                     .andExpect(jsonPath("$.version").doesNotExist());
         }
 
@@ -109,7 +109,7 @@ class ToDoControllerTest {
 
             mockMvc.perform(patch(BASE + "/{id}/MarkDone", ID))
                     .andExpect(status().isOk())
-                    .andExpect(jsonPath("$.status").value("DONE"));
+                    .andExpect(jsonPath("$.status").value("done"));
         }
 
         @Test
@@ -157,7 +157,7 @@ class ToDoControllerTest {
 
         mockMvc.perform(patch(BASE + "/{id}/MarkNotdone", ID))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.status").value("NOT_DONE"));
+                .andExpect(jsonPath("$.status").value("not done"));
     }
 
     @Nested

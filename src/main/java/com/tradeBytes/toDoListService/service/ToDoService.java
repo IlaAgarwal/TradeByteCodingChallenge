@@ -109,7 +109,8 @@ public class ToDoService {
 
     public boolean isImmutable(ToDoItem toDoItem) {
         return toDoItem.getStatus() == Status.PAST_DUE
-                || (toDoItem.getDueDateTime() != null
+                || (toDoItem.getStatus() == Status.NOT_DONE
+                    && toDoItem.getDueDateTime() != null
                     && toDoItem.getDueDateTime().isBefore(LocalDateTime.now()));
     }
 
