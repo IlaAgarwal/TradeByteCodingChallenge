@@ -63,6 +63,13 @@ A scheduled job (`PastDueStatusScheduler`) runs at startup and then every 60 sec
   This closes the window between the due date passing and the next scheduler run. Until that run,
   the stored status is still `"not done"`, so `getItem` and `getAllItems?fetchAll=true` may briefly
   show `"not done"` for an item that already rejects changes as past due.
+- **The status could also be corrected on access instead of waiting for the scheduler.** An
+  alternative is to flip an overdue `"not done"` item to `"past due"` whenever it is read or an
+  update is attempted, so the API always returns the correct status. This would need a conditional
+  single-item update (`... WHERE id = :id AND status = 'not done' AND due_datetime < :now`) to avoid
+  optimistic-lock clashes with the scheduler, and `noRollbackFor = ItemImmutableException.class` on
+  the update methods so the flip is kept when the change is rejected. It was not implemented to keep
+  reads side-effect free and the scheduler as the single place that changes status automatically.
 - **`"done"` items stay editable after their due date.** Only `"not done"` items become past due
   (the scheduler only touches `"not done"` items). A done item whose due date has passed can still be
   edited or moved back to `"not done"`; once reopened it is overdue, so it is immediately treated as
